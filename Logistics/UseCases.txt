@@ -1,0 +1,209 @@
+Logistica/Catena di Fornitura - Casi d'Uso Dettagliati
+Scenari Reali di Gestione Magazzino
+Inventario Multi-location:
+
+Amazon ha oltre 1000 centri di distribuzione globalmente
+Prodotto X è stoccato nei magazzini di Seattle, Dallas e Atlanta
+Cliente a Denver ordina → Sistema determina location di evasione ottimale basata su livelli inventario, costi spedizione e velocità consegna
+Aggiornamenti inventario in tempo reale in tutte le location quando articolo viene prelevato
+
+Strategie di Evasione:
+
+Cross-docking: Walmart riceve merci dai fornitori e le spedisce immediatamente ai negozi senza immagazzinamento
+Drop-shipping: Cliente ordina da rivenditore → Ordine inoltrato al produttore → Produttore spedisce direttamente al cliente
+Just-in-time: Toyota riceve parti solo quando necessarie per la catena di montaggio
+Batch picking: Operatore magazzino preleva articoli per 20 ordini simultaneamente per ottimizzare percorsi
+
+Esempi di Complessità Spedizioni
+Decisioni Multi-corriere:
+
+Pacco da 23kg da Milano a Palermo:
+
+Poste Italiane: 3 giorni, €25
+UPS: 2 giorni, €35
+DHL: 1 giorno, €55
+Corriere regionale: 2 giorni, €20
+
+
+Sistema seleziona automaticamente in base a preferenza spedizione cliente, ottimizzazione costi o urgenza consegna
+
+Sfide Spedizioni Internazionali:
+
+Spedizione elettronica in Germania richiede:
+
+Documentazione conformità CE
+Dichiarazione doganale con codici HS
+Calcolo e raccolta IVA
+Screening articoli limitati (batterie litio hanno regole speciali)
+Selezione corriere (DHL vs FedEx International vs servizi postali)
+
+
+
+Impatto Reale Ottimizzazione Percorsi
+Pianificazione Percorsi Consegna:
+
+Sistema ORION di UPS ottimizza 55.000 percorsi giornalmente
+Fattori: modelli traffico, finestre temporali consegna, capacità camion, orari autisti
+Ridurre 1 miglio per autista al giorno fa risparmiare a UPS 50 milioni di dollari annualmente
+Re-routing dinamico quando arrivano nuove consegne urgenti
+
+Variazioni Consegna Last-mile:
+
+Aree urbane: Messenger in bici, veicoli elettrici, punti ritiro armadietti
+Aree suburbane: Consegna camion standard, deposito garage/portico
+Aree rurali: Percorsi più lunghi, consolidamento pacchi ai punti distribuzione
+Stesso giorno: Autisti gig stile Uber, progetti consegna droni
+
+Esempi Eventi Catena Fornitura
+Scenari Interruzione:
+
+Blocco Canale Suez (Ever Given) → Rotte spedizione alternative → Ritardi 2 settimane → Carenze inventario → Fermi linee produzione
+COVID-19 → Chiusure fabbriche in Cina → Carenza semiconduttori → Tagli produzione industria auto
+Disastri naturali → Chiusure porti → Re-routing attraverso porti diversi → Aumenti costi
+
+Conformità Normativa:
+
+Prodotti alimentari richiedono monitoraggio temperatura in tutta la catena del freddo
+Farmaceutici necessitano documentazione chain-of-custody
+Materiali pericolosi richiedono certificazioni speciali e routing
+Documentazione import/export varia per paese e tipo prodotto
+
+Questi scenari forniscono domini business ricchi dove l'architettura esagonale ti aiuta a sostituire diverse integrazioni esterne (corrieri, sistemi pagamento, framework normativi) mentre DDD ti aiuta a modellare regole business complesse e flussi di lavoro che riflettono operazioni del mondo reale.RiprovaDo scelgo Logistica/Catena di Fornitura. che casi d'uso mi proponi di implementare?ModificaCasi d'Uso per Implementare Logistica/Catena di Fornitura
+Ecco una progressione di casi d'uso dal più semplice al più complesso che puoi implementare:
+Livello 1 - Sistema Base di Gestione Ordini
+Caso d'uso iniziale: Sistema di evasione ordini multi-magazzino
+
+Domain: Gestione inventario, allocazione ordini, spedizioni
+Complessità: 3 magazzini (Milano, Roma, Napoli), 5 corrieri
+Regole business:
+
+Seleziona magazzino più vicino con disponibilità
+Se articolo non disponibile, verifica magazzini alternativi
+Calcola costi spedizione per cliente in base a peso/volume
+Priorità: Standard (5-7 giorni), Express (2-3 giorni), Same-day
+
+
+
+Integrazioni esterne (Adapter):
+
+API corrieri: Poste Italiane, UPS, DHL, BRT
+Sistema WMS (Warehouse Management)
+Gateway pagamenti per costi spedizione
+
+Livello 2 - Ottimizzazione Percorsi e Tracking
+Estensione: Sistema di routing e tracciamento consegne
+
+Nuovi domini: Gestione flotta, ottimizzazione percorsi, customer service
+Complessità aggiunta:
+
+20 veicoli aziendali per consegne locali
+Ottimizzazione percorsi giornalieri (100+ consegne/giorno)
+Finestre temporali consegna (mattina 9-13, pomeriggio 14-18)
+Tracking real-time per clienti
+
+
+
+Nuove integrazioni:
+
+API Google Maps/HERE per calcolo percorsi
+Dispositivi GPS sui veicoli
+Sistema notifiche SMS/email
+App mobile per autisti
+
+Livello 3 - Gestione Inventory Intelligente
+Estensione: Sistema previsionale e rifornimento automatico
+
+Nuovi domini: Demand forecasting, gestione fornitori, procurement
+Complessità aggiunta:
+
+Algoritmi previsione domanda basati su stagionalità
+Livelli stock minimi/massimi dinamici
+Ordini automatici ai fornitori
+Gestione lead time variabili per fornitore
+
+
+
+Nuove integrazioni:
+
+EDI con fornitori principali
+API marketplace (Amazon, eBay) per sincronizzazione stock
+Sistemi ERP fornitori
+Database storico vendite per machine learning
+
+Livello 4 - Supply Chain Resilienza
+Estensione: Gestione rischi e scenari alternativi
+
+Nuovi domini: Risk management, alternative sourcing, crisis management
+Complessità aggiunta:
+
+Monitoring fornitori per alert rischi (meteo, politici, finanziari)
+Fornitori alternativi con switch automatico
+Gestione backorder e comunicazione proattiva clienti
+Analisi impatto interruzioni su tutta la catena
+
+
+
+Nuove integrazioni:
+
+API news/weather per alert rischi
+Sistemi rating creditizio fornitori
+Piattaforme B2B per sourcing alternativo
+Dashboard BI per supply chain visibility
+
+Livello 5 - Omnichannel e Returns
+Estensione: Gestione resi e canali multipli
+
+Nuovi domini: Reverse logistics, quality control, customer experience
+Complessità aggiunta:
+
+Ordini da web, app mobile, negozi fisici, marketplace
+Gestione resi con ispezionE qualità
+Restocking vs liquidazione vs reso fornitore
+Ship-from-store per ordini online
+
+
+
+Nuove integrazioni:
+
+POS sistemi negozi fisici
+Piattaforme marketplace multiple
+Servizi valutazione prodotti usati
+Partner liquidazione/ricondizionamento
+
+Strategia di Implementazione Consigliata
+Inizia con Livello 1 e implementa:
+
+Aggregates principali:
+
+Order (con items, customer info, shipping preferences)
+Inventory (per magazzino/prodotto)
+Shipment (tracking, carrier, status)
+Warehouse (location, capacity, operating hours)
+
+
+Domain Services:
+
+OrderAllocationService (quale magazzino usa)
+ShippingCostCalculator
+CarrierSelectionService
+
+
+Events:
+
+OrderPlaced, InventoryReserved, ShipmentCreated, DeliveryCompleted
+
+
+Ports (interfacce):
+
+CarrierGateway, WarehouseRepository, NotificationService
+
+
+
+Vantaggi di questo approccio:
+
+Ogni livello aggiunge complessità gestibile
+Puoi testare hexagonal architecture con integrazioni reali
+Impari DDD modeling con domini ricchi ma comprensibili
+Riflette crescita reale di un'azienda logistica
+
+Quale livello vuoi iniziare ad implementare? Posso darti dettagli più specifici su aggregates, value objects e business rules per il livello che scegli.
